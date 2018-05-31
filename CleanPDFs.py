@@ -1,14 +1,21 @@
-#script to organize and name PDFs in PDF folder on my H drive
-
+#script to organize and name PDFs in PDF folder on my H drive and send me a report via email
 
 
 #imports
-from os import listdir, rename, remove
-from os.path import isfile, join, getctime
-from time import localtime, strftime
-from ntpath import basename
-from smtplib import SMTP_SSL
-from email.mime.text import MIMEText
+from os               import listdir, rename, remove
+from os.path          import isfile, join, getctime
+from time             import localtime, strftime
+from ntpath           import basename
+from smtplib          import SMTP_SSL
+from email.mime.text  import MIMEText
+from configparser     import RawConfigParser
+
+#config loading
+config = RawConfigParser()
+config.read('cleanpdf.ini')
+login = config['login']
+pw = config['password']
+rcp = config['recipient']
 
 #begin functions
 def ispdf(file):
@@ -46,12 +53,10 @@ def sendreport(filename):
     date = strftime("%a, %m %d" ,localtime())
     with open(filename) as re:
         msg = MIMEText(re.read())
-    #TODO add config file
-    login, password = 'osuepersson@gmail.com', 'erik011497'
     
     msg['Subject'] = "PDF Cleanup on " + date
     msg['From'] = login
-    msg['To'] = 'persson.12@osu.edu'
+    msg['To'] = rc
 
     s = SMTP_SSL('smtp.gmail.com',465,timeout=10)
     try:
