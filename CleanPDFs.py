@@ -13,7 +13,7 @@ from configparser     import RawConfigParser
 #config loading
 config = RawConfigParser()
 config.read('cleanpdf.ini')
-login, pw, rcp = config['login'], config['password'], config['recipient']
+login, pw, rcp = config['GMAIL']['login'], config['GMAIL']['password'], config['GMAIL']['recipient']
 
 #begin functions
 
